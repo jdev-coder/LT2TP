@@ -53,6 +53,7 @@ local Planks = Window:CreateTab({Name = 'Planks'})
 local Water = Window:CreateTab({Name = 'Water'})
 local Vehicle = Window:CreateTab({Name = 'Vehicle'})
 local Changelog = Window:CreateTab({Name = 'Changelog'})
+local Credits = Window:CreateTab({Name = 'Credits'})
 
 local VehicleSpeedSection = Vehicle:CreateSection({Name = 'Speed'})
 local WaterModSection = Water:CreateSection({Name = 'Water Modification'})
@@ -71,7 +72,7 @@ local PlayerMovement = Player:CreateSection({Name = 'Movement'})
 local PlayerMisc = Player:CreateSection({Name = 'Miscellaneous'})
 local FreeLandSect = Land:CreateSection({Name = 'Free Land'})
 local ChangelogSect = Changelog:CreateSection({Name = 'Changelog'})
-local CreditsSect = Changelog:CreateSection({Name = 'Credits'})
+local CreditsSect = Credits:CreateSection({Name = 'Credits'})
 
 local NoticeClient = getsenv(game:GetService('Players').LocalPlayer.PlayerGui.NoticeGUI.NoticeClient)
 local NoticeFunc = NoticeClient.doNotice
