@@ -46,7 +46,7 @@ local ChangelogTable = {
     {
         Type = 'Change',
         Name = 'JSK',
-        Value = 'Modify AntiLog to fix problem where it tried to hook FS.',
+        Value = 'Fix AntiLog problem where it tried to hook FS.',
     },
     {
         Type = 'Change',
