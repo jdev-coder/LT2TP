@@ -1,3 +1,11 @@
+--//Credits\\--
+--[[
+	Pepsi for the awesome UI library! (https://v3rmillion.net/showthread.php?tid=1139856)
+	@DinosaurXxX for the Max Land function. (I ONLY cleaned up the code a little bit.) (https://gist.github.com/DinosaurXxX/93f5d5df959cf20f7665991be5e3c9b3)
+	Ataias for the anti-exploit bypass. (https://v3rmillion.net/showthread.php?tid=1141592)
+	Me and other contributors (noobiii) for the rest.
+]]
+
 local UI = loadstring(game:GetObjects('rbxassetid://12780536405')[1].Source)()
 local Window = UI:CreateWindow({Name = 'LT2TP', Theme = {Backdrop = nil, Info = 'LT2TP v1.4 by JSK'}})
 local Land = Window:CreateTab({Name = 'Land'})
