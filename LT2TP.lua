@@ -816,6 +816,7 @@ TrollingBase:AddButton({
     end
 })
 
+--[[
 TrollingBase:AddButton({
     Name = 'Build Anywhere', 
     Callback = function()
@@ -835,6 +836,7 @@ TrollingBase:AddButton({
         end)
     end
 })
+]]
 
 --//Logs Items\\--
 WoodSellSectionPlanks:AddButton({
