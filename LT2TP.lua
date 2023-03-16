@@ -208,17 +208,16 @@ if not _G.Bypassed then
         wait(9e9)
     end)
     
-    NC = hookmetamethod(game, '__namecall', newcclosure(function(...)
+    NC = hookmetamethod(game, '__namecall', newcclosure(function(Self, ...)
         local Args = {...}
         
-        if tostring(...) == 'ClientPlacedWire' and getnamecallmethod() == 'FireServer' and Args[2] and Args[2][1] and Args[2][2] and (Args[1] - Args[2]).Magnitude > 7 then
+        if tostring(Self) == 'ClientPlacedWire' and getnamecallmethod() == 'FireServer' and Args[2] and Args[2][1] and Args[2][2] and Args[2][1].X and (Args[1] - Args[2]).Magnitude > 7 then
             Notify('Whoops! You have triggered the long wire ban! Luckily, LT2TP saved ya. If you are sure you want to place this wire, please rejoin and do not run LT2TP.')
             wait(9e9)
         end
-        
+    
         --//Other protections.\\--
-        
-        if tostring(...) == 'AddLog' then
+        if tostring(Self) == 'AddLog' then
             Notify('Whoops! You have triggered the anti-cheat! Luckily, LT2TP saved ya.')
             wait(9e9)
         end
@@ -226,12 +225,12 @@ if not _G.Bypassed then
             Notify('Whoops! You have triggered the anti-cheat! Luckily, LT2TP saved ya.')
             wait(9e9)
         end
-        if tostring(...) == 'Ban' then
+        if tostring(Self) == 'Ban' then
             Notify('Whoops! You have triggered the anti-cheat! Luckily, LT2TP saved ya.')
             wait(9e9)
         end
         
-        return NC(...)
+        return NC(Self, ...)
     end))
  
     _G.Bypassed = true
