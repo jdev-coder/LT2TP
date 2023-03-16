@@ -48,6 +48,11 @@ local ChangelogTable = {
         Name = 'JSK',
         Value = 'Modify AntiLog to fix problem where it tried to hook FireServer on a RemoteFunction.',
     },
+    {
+        Type = 'Change',
+        Name = 'JSK',
+        Value = 'Whoops. AntiLog used HookFunction which may not have done anything.',
+    },
 }
 
 local UI = loadstring(game:HttpGet('https://raw.githubusercontent.com/noobiii/modified-pepsilib/main/source'))()
@@ -176,9 +181,29 @@ CreditsSect:AddLabel('\n')
 CreditsSect:AddLabel('Me (@JSK, jdev-coder)\nand other contributors (@noobiii) for the rest.\n')
 
 --//Anti-Exploit bypass\\--
-
---ALERT: Skidded function below, should rewrite.
 if not _G.Bypassed then
+    local NC = nil
+    local NC2 = nil
+    
+    NC = hookmetamethod(game, '__namecall', function(Self, ...)
+        local Args = {...}
+        local NamecallMethod = getnamecallmethod()
+    
+        if Self == game:GetService('ReplicatedStorage').Transactions.AddLog and NamecallMethod == 'InvokeServer' and Args[1] == 'Exploit' then
+            Notify('Whoops! You have triggered the anti-cheat. Luckily, LT2TP saved ya.')
+            return 
+        end
+        
+        if Self == game:GetService('ReplicatedStorage').PlaceStructure.ClientPlacedWire and NamecallMethod == 'InvokeServer' and Args[2] and Args[2][1] and Args[2][2] and (Args[1] - Args[2]).Magnitude > 7 then
+            Notify('Whoops! You have triggered the long wire ban! Luckily, LT2TP saved ya. If you are sure you want to place this wire, please rejoin and do not run LT2TP.')
+            return 
+        end
+    
+        return NC(Self, ...)
+    end)
+	
+	
+    --ALERT: CODE BELOW NOT WRITTEN BY ME, NEEDS TO BE REPLACED. (SKIDDED)
     local Anticheat_Env = getsenv(game:GetService('Players').LocalPlayer.PlayerGui.LoadSaveGUI.LoadSaveClient.LocalScript)
     
     if game:GetService('ReplicatedStorage').Interaction:FindFirstChild('Ban') then
@@ -197,8 +222,7 @@ if not _G.Bypassed then
         wait(9e9)
     end)
     
-    local NC
-    NC = hookmetamethod(game, '__namecall', newcclosure(function(...)
+    NC2 = hookmetamethod(game, '__namecall', newcclosure(function(...)
         if tostring(...) == 'AddLog' then
             wait(9e9)
         end
@@ -208,16 +232,13 @@ if not _G.Bypassed then
         if tostring(...) == 'Ban' then
             wait(9e9)
         end
-        return NC(...)
+        return NC2(...)
     end))
-
+ 
     _G.Bypassed = true
+  
+    Notify('LT2TP has sucessfully disabled the anti-cheat. You will automatically be protected against certain bans.')
 end
-
---//AddLog bypass\--
-hookfunction(game:GetService('ReplicatedStorage').Transactions.AddLog.InvokeServer, function()
-    return
-end)
 
 --//Functions, exposed via getgenv\\--
 function AddLand(Pos)
@@ -253,7 +274,7 @@ end
 FreeLandSect:AddButton({
     Name = 'Max Land',
     Callback = function()
-	--ALERT: Skidded function below, should rewrite.
+	--ALERT: CODE BELOW NOT WRITTEN BY ME, NEEDS TO BE REPLACED. (SKIDDED)
 			
         for i,v in pairs(game:GetService('Workspace').Properties:GetChildren()) do
         	if v:FindFirstChild('Owner') and v.Owner.Value == game.Players.LocalPlayer then
