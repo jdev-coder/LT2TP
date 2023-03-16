@@ -269,6 +269,11 @@ pcall(function() game:GetService('Players').LocalPlayer.PlayerGui.CreditsGUI:Des
 
 game:GetService('StarterGui').CreditsGUI:Clone().Parent = game:GetService('Players').LocalPlayer.PlayerGui
 
+--//Fix Menu button when Credits GUI is closed.\\--
+game:GetService('Players').LocalPlayer.PlayerGui.CreditsGUI.Credits.Quit.Activated:Connect(function()
+    game:GetService('Players').LocalPlayer.PlayerGui.MenuGUI.Open.Visible = true
+end)
+
 --//Functions\\--
 function Notify(Message)
     if syn_context_set then
