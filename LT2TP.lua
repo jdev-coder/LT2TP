@@ -722,7 +722,7 @@ end
 --//Teleports Items\\--
 TeleportsSection:AddDropdown({
     Name = 'Teleport',
-    List = {'Volcano', 'Spawn', 'Wood R US'},
+    List = {'Volcano', 'Spawn', 'Wood R US', 'Link\'s Logic'},
     Callback = function(Location)
         if Location == 'Volcano' then
             game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-1593, 630, 1101)
@@ -730,6 +730,8 @@ TeleportsSection:AddDropdown({
             game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Region_Main.SpawnLocation.CFrame
         elseif Location == 'Wood R US' then
             game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(270, 3, 56)
+        elseif Location == 'Link\'s Logic' then
+            game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(4609, 7, -800)
         end
     end
 })
