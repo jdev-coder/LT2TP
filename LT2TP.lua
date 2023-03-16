@@ -1,13 +1,42 @@
 --//Credits\\--
 --[[
-	Pepsi for the awesome UI library! (https://v3rmillion.net/showthread.php?tid=1139856)
+	@Pepsi for the awesome UI library! (https://v3rmillion.net/showthread.php?tid=1139856)
 	@DinosaurXxX for the Max Land function. (I ONLY cleaned up the code a little bit.) (https://gist.github.com/DinosaurXxX/93f5d5df959cf20f7665991be5e3c9b3)
-	Ataias for the anti-exploit bypass. (https://v3rmillion.net/showthread.php?tid=1141592)
-	Me and other contributors (noobiii) for the rest.
+	@Ataias for the anti-exploit bypass. (https://v3rmillion.net/showthread.php?tid=1141592)
+	
+	Me (@JSK, jdev-coder) and other contributors (@noobiii) for the rest.
 ]]
 
-local UI = loadstring(game:GetObjects('rbxassetid://12780536405')[1].Source)()
-local Window = UI:CreateWindow({Name = 'LT2TP', Theme = {Backdrop = nil, Info = 'LT2TP v1.4 by JSK'}})
+--//Changelog Info\\--
+--[[
+    Changelog template (/ lists different options or examples.):
+    {
+        Type = 'Change/Add/Remove',
+        Name = 'noobiii/JSK',
+        Value = 'Fixed tree dismemberer/Fixed gravity slider',
+    }
+]]
+
+local ChangelogTable = {
+    {
+        Type = 'Change',
+        Name = 'JSK',
+        Value = 'Fixed tree dismemberer.',
+    },
+    {
+        Type = 'Change',
+        Name = 'noobiii',
+        Value = 'Made the sliders on the Players tab show what you are changing.',
+    },
+    {
+        Type = 'Add',
+        Name = 'noobiii',
+        Value = 'Increased the Gravity Slider\'s range to 0-500.',
+    },
+}
+
+local UI = loadstring(game:HttpGet('https://raw.githubusercontent.com/noobiii/modified-pepsilib/main/source'))()
+local Window = UI:CreateWindow({Name = 'LT2TP', Theme = {Backdrop = nil, Info = 'LT2TP v1.6 by JSK'}})
 local Land = Window:CreateTab({Name = 'Land'})
 local Player = Window:CreateTab({Name = 'Player'})
 local World = Window:CreateTab({Name = 'World'})
@@ -18,6 +47,7 @@ local Trolling = Window:CreateTab({Name = 'Trolling'})
 local Planks = Window:CreateTab({Name = 'Planks'})
 local Water = Window:CreateTab({Name = 'Water'})
 local Vehicle = Window:CreateTab({Name = 'Vehicle'})
+local Changelog = Window:CreateTab({Name = 'Changelog'})
 
 local VehicleSpeedSection = Vehicle:CreateSection({Name = 'Speed'})
 local WaterModSection = Water:CreateSection({Name = 'Water Modification'})
@@ -35,6 +65,8 @@ local WorldBridge = World:CreateSection({Name = 'Bridge'})
 local PlayerMovement = Player:CreateSection({Name = 'Movement'})
 local PlayerMisc = Player:CreateSection({Name = 'Miscellaneous'})
 local FreeLandSect = Land:CreateSection({Name = 'Free Land'})
+local ChangelogSect = Changelog:CreateSection({Name = 'Changelog'})
+local CreditsSect = Changelog:CreateSection({Name = 'Credits'})
 
 local NoticeClient = getsenv(game:GetService('Players').LocalPlayer.PlayerGui.NoticeGUI.NoticeClient)
 local NoticeFunc = NoticeClient.doNotice
@@ -53,6 +85,50 @@ local CF = nil
 
 local AutoFarm = false
 local AntiBL = false
+
+for i,v in pairs(ChangelogTable) do
+    if v.Type == 'Add' then
+        local ToSplitAt = #v.Value / 2
+        local Value = string.sub(v.Value, 1, ToSplitAt)
+        local Value2 = string.sub(v.Value, ToSplitAt + 1, #v.Value)
+        
+        if i > 1 then
+            ChangelogSect:AddLabel({Name = '\n'})
+        end
+        
+        ChangelogSect:AddLabel({
+            Name = '[+] ' .. Value .. '\n' .. Value2 .. ' [' .. v.Name .. ']',
+        })
+    end
+    if v.Type == 'Change' then
+        local ToSplitAt = #v.Value / 2
+        local Value = string.sub(v.Value, 1, ToSplitAt)
+        local Value2 = string.sub(v.Value, ToSplitAt + 1, #v.Value)
+        
+        if i > 1 then
+            ChangelogSect:AddLabel({Name = '\n'})
+        end
+        
+        ChangelogSect:AddLabel({
+            Name = '\n[*] ' .. Value .. '\n' .. Value2 .. ' [' .. v.Name .. ']',
+        })
+    end
+    if v.Type == 'Remove' then
+        local ToSplitAt = #v.Value / 2
+        local Value = string.sub(v.Value, 1, ToSplitAt)
+        local Value2 = string.sub(v.Value, ToSplitAt + 1, #v.Value)
+        
+        if i > 1 then
+            ChangelogSect:AddLabel({Name = '\n'})
+        end
+        
+        ChangelogSect:AddLabel({
+            Name = '[-] ' .. Value .. Value2 .. ' [' .. v.Name .. ']',
+        })
+    end
+end
+
+ChangelogSect:AddLabel({Name = '\n'})
 
 --//If the old loop exists, stop it. It will prevent lag if the script is executed multiple times.\\--
 if _G.Conn then
@@ -104,6 +180,11 @@ if not _G.Bypassed then
 
     _G.Bypassed = true
 end
+
+--//AddLog bypass\--
+hookfunction(game:GetService('ReplicatedStorage').Transactions.AddLog.InvokeServer, function()
+    return
+end)
 
 --//Functions, exposed via getgenv\\--
 function AddLand(Pos)
@@ -180,16 +261,24 @@ FreeLandSect:AddButton({
 })
 
 --//Player Items\\--
+PlayerMovement:AddLabel({
+    Name = 'Gravity',
+})
+
 PlayerMovement:AddSlider({
     Name = 'Gravity',
     Value = 196.2,
     Min = 0,
-    Max = 196.2,
+    Max = 500,
     Format = function(Val)
         Gravity = Val
         
         return Val
     end
+})
+
+PlayerMovement:AddLabel({
+    Name = 'WalkSpeed',
 })
 
 PlayerMovement:AddSlider({
@@ -202,6 +291,10 @@ PlayerMovement:AddSlider({
         
         return Val
     end
+})
+
+PlayerMovement:AddLabel({
+    Name = 'JumpPower',
 })
 
 PlayerMovement:AddSlider({
@@ -523,31 +616,45 @@ TreeMisc:AddButton({
         for i,v in pairs(workspace.LogModels:GetChildren()) do
             if v:FindFirstChild('Owner') and v.Owner.Value == game:GetService('Players').LocalPlayer then
                 for i2,v2 in pairs(v:GetChildren()) do
-                    if v2.Name == 'WoodSection' then
+                    if v2.Name == 'WoodSection' and v2:FindFirstChild('ID') and v2:FindFirstChild('Tree Weld') then
                         local AxeName = Axe.ToolName.Value
                         local Class = require(game:GetService('ReplicatedStorage').AxeClasses:FindFirstChild('AxeClass_'..AxeName)).new()
                         local Break = false
                         local Count = 0
-                        local Height = v2.CFrame:pointToObjectSpace(v2.Position).Y + v2.Size.Y / 1.145
-                        local Conn = nil
+                        local TreeLimbCount = 0
+                        local Height = CFrame.new(v2.CFrame.X, v2.CFrame.Y - v2.Size.Y / 2, v2.CFrame.Z):pointToObjectSpace(v2.Position).Y + v2.Size.Y / 2 / 1.01
+
+                        for i,v in pairs(v:GetChildren()) do
+                            if v.Name == 'WoodSection' then
+                                TreeLimbCount += 1
+                            end
+                        end
                         
                         Axe.Parent = game:GetService('Players').LocalPlayer.Backpack
                         
-                        game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.CFrame = v.WoodSection.CFrame
-                        
-                        Conn = workspace.LogModels.ChildAdded:Connect(function(Tree)
-                            if Tree:FindFirstChild('Owner') and Tree.Owner.Value == game:GetService('Players').LocalPlayer then
-                                Conn:Disconnect()
-                                
-                                Break = true
-                                
-                                Conn = nil
-                            end
-                        end)
+                        game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.CFrame = v2.CFrame
                         
                         repeat 
+                            local LimbCount = 0
+                            
+                            for i,v in pairs(v:GetChildren()) do
+                                if v.Name == 'WoodSection' then
+                                    LimbCount += 1
+                                end
+                            end
+                            
+                            if Count > 30 then
+                                Break = true
+                            end
+                            
+                            if LimbCount ~= TreeLimbCount then
+                                Break = true
+                            end
+                            
+                            Count += 1
+                            
                             wait(Class.SwingCooldown + .08)
-                            game:GetService('ReplicatedStorage').Interaction.RemoteProxy:FireServer(v.CutEvent, {tool = Axe, faceVector = Vector3.new(1,0,0), height = Height, sectionId = 1, hitPoints = Class.Damage, cooldown = Class.SwingCooldown, cuttingClass = 'Axe'})
+                            game:GetService('ReplicatedStorage').Interaction.RemoteProxy:FireServer(v.CutEvent, {tool = Axe, faceVector = Vector3.new(1,0,0), height = Height, sectionId = v2.ID.Value, hitPoints = Class.Damage, cooldown = Class.SwingCooldown, cuttingClass = 'Axe'})
                         until Break or _G.DevBreak
                     end
                 end
