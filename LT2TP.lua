@@ -29,14 +29,14 @@ local ChangelogTable = {
         Value = 'Made the sliders on the Players tab show what you are changing.',
     },
     {
-        Type = 'Change',
+        Type = 'Add',
         Name = 'noobiii',
         Value = 'Increased the Gravity Slider\'s range to 0-500.',
     },
     {
         Type = 'Add',
         Name = 'JSK',
-        Value = 'Add a Credits section into the GUI.',
+        Value = 'Disable the AutoFarm and stop cutting any trees when Safe Reset is clicked.',
     },
 }
 
@@ -339,6 +339,9 @@ PlayerMisc:AddButton({
         wait()
         
         game:GetService('Players').LocalPlayer.Character.Head:Destroy()
+        game:GetService('Players').LocalPlayer.Character.HumanoidRootPart:Destroy()
+        
+        AutoFarm = false
     end
 })
 
