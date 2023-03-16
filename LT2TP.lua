@@ -43,6 +43,11 @@ local ChangelogTable = {
         Name = 'JSK',
         Value = 'Add AntiLog so the Anti-Cheat cannot tell the server you exploited.',
     },
+    {
+        Type = 'Remove',
+        Name = 'JSK',
+        Value = 'Modify AntiLog to fix problem where it tried to hook FireServer on a RemoteFunction.',
+    },
 }
 
 local UI = loadstring(game:HttpGet('https://raw.githubusercontent.com/noobiii/modified-pepsilib/main/source'))()
@@ -211,10 +216,6 @@ end
 
 --//AddLog bypass\--
 hookfunction(game:GetService('ReplicatedStorage').Transactions.AddLog.InvokeServer, function()
-    return
-end)
-
-hookfunction(game:GetService('ReplicatedStorage').Transactions.AddLog.FireServer, function()
     return
 end)
 
