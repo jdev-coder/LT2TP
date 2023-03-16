@@ -29,9 +29,14 @@ local ChangelogTable = {
         Value = 'Made the sliders on the Players tab show what you are changing.',
     },
     {
-        Type = 'Add',
+        Type = 'Change',
         Name = 'noobiii',
         Value = 'Increased the Gravity Slider\'s range to 0-500.',
+    },
+    {
+        Type = 'Add',
+        Name = 'JSK',
+        Value = 'Add a Credits section into the GUI.',
     },
 }
 
@@ -141,6 +146,23 @@ game:GetService('Players').LocalPlayer.Idled:connect(function()
    wait(1)
    game:GetService('VirtualUser'):Button2Up(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
 end)
+
+--//Credits Items\\--
+
+--I hate this code.
+CreditsSect:AddLabel('@Pepsi for the awesome UI library!')
+CreditsSect:AddLabel('\n')
+CreditsSect:AddLabel('(https://v3rmillion.net/showthread.php?tid=1139856)')
+CreditsSect:AddLabel('\n@DinosaurXxX for the Max Land function.')
+CreditsSect:AddLabel('\n')
+CreditsSect:AddLabel('(I ONLY cleaned up the code a little bit.)')
+CreditsSect:AddLabel('\n')
+CreditsSect:AddLabel('(https://gist.github.com/DinosaurXxX/93f5d5df959cf20f\n7665991be5e3c9b3)')
+CreditsSect:AddLabel('\n@Ataias for the anti-exploit bypass.')
+CreditsSect:AddLabel('\n')
+CreditsSect:AddLabel('(https://v3rmillion.net/showthread.php?tid=1141592)')
+CreditsSect:AddLabel('\n')
+CreditsSect:AddLabel('Me (@JSK, jdev-coder)\nand other contributors (@noobiii) for the rest.\n')
 
 --//Anti-Exploit bypass\\--
 
