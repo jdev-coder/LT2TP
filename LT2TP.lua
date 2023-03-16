@@ -58,6 +58,11 @@ local ChangelogTable = {
         Name = 'JSK',
         Value = 'Added built-in long wire ban protection.',
     },
+    {
+        Type = 'Change',
+        Name = 'JSK',
+        Value = 'Safe Reset now stops cutting trees.',
+    },
 }
 
 local UI = loadstring(game:HttpGet('https://raw.githubusercontent.com/noobiii/modified-pepsilib/main/source'))()
@@ -216,8 +221,12 @@ if not _G.Bypassed then
             wait(9e9)
         end
     
-        --//Other protections.\\--
+        --//Other protections, not written by me. Needs rewrite. (SKIDDED :O).\\--
         if tostring(Self) == 'AddLog' then
+            Notify('Whoops! You have triggered the anti-cheat! Luckily, LT2TP saved ya.')
+            wait(9e9)
+        end
+        if tostring(Self) == 'ArchiveLog' then
             Notify('Whoops! You have triggered the anti-cheat! Luckily, LT2TP saved ya.')
             wait(9e9)
         end
@@ -241,6 +250,26 @@ function AddLand(Pos)
     game:GetService('ReplicatedStorage').PropertyPurchasing.ClientExpandedProperty:FireServer(Base, Pos)
 end
 
+--//Modify game credits\\--
+local Module = require(game:GetService('ReplicatedStorage').Credits)
+Module[8] = {
+    heading = '\nLT2TP UI Library',
+    credits = {'Pepsi'},
+}
+Module[9] = {
+    heading = 'LT2TP AC Bypass',
+    credits = {'Ataias', 'JSK (@jdev-coder)'},
+}
+Module[10] = {
+    heading = '\nLT2TP',
+    credits = {'JSK (@jdev-coder)', 'noobiii'},
+}
+
+pcall(function() game:GetService('Players').LocalPlayer.PlayerGui.CreditsGUI:Destroy() end)
+
+game:GetService('StarterGui').CreditsGUI:Clone().Parent = game:GetService('Players').LocalPlayer.PlayerGui
+
+--//Functions\\--
 function Notify(Message)
     if syn_context_set then
         syn_context_set(2)
@@ -273,7 +302,7 @@ end
 FreeLandSect:AddButton({
     Name = 'Max Land',
     Callback = function()
-	--ALERT: CODE BELOW NOT WRITTEN BY ME, NEEDS TO BE REPLACED. (SKIDDED)
+	    --ALERT: CODE BELOW NOT WRITTEN BY ME, NEEDS TO BE REPLACED. (SKIDDED)
 			
         for i,v in pairs(game:GetService('Workspace').Properties:GetChildren()) do
         	if v:FindFirstChild('Owner') and v.Owner.Value == game.Players.LocalPlayer then
@@ -373,6 +402,10 @@ PlayerMisc:AddButton({
         game:GetService('Players').LocalPlayer.Character.HumanoidRootPart:Destroy()
         
         AutoFarm = false
+        
+        _G.DevBreak = true
+        wait(3)
+        _G.DevBreak = false
     end
 })
 
@@ -759,6 +792,9 @@ TrollingBase:AddToggle({
 TrollingBase:AddButton({
     Name = 'Anti Blacklist',
     Callback = function()
+        return Notify('Anti-Blacklist does not work yet.')
+        
+        --[[
         local Joint = game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.RootJoint
         local OldPos = game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.CFrame
         Joint:Clone().Parent = Joint.Parent
@@ -771,27 +807,29 @@ TrollingBase:AddButton({
             
             game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.CFrame = OldPos
         end
+        ]]
     end
 })
 
---[[
-Trolling.AddButton('Build Anywhere', function()
-    local DragItem = game:GetService('Players').LocalPlayer.PlayerGui.StructureDraggingGUI.DragItem
-    local OldDrag = nil
-    
-    OldDrag = hookfunction(DragItem.Invoke, function(...)
-        local Args = {...}
+TrollingBase:AddButton({
+    Name = 'Build Anywhere', 
+    Callback = function()
+        local DragItem = game:GetService('Players').LocalPlayer.PlayerGui.StructureDraggingGUI.DragItem
+        local OldDrag = nil
         
-        print(Args[1])
-        
-        if tostring(Args[1]) == 'Model' or tostring(Args[1]) == 'PlacingModel' then
-            return true, true
-        end
-        
-        return OldDrag(...)
-    end)
-end)
-]]
+        OldDrag = hookfunction(DragItem.Invoke, function(...)
+            local Args = {...}
+            
+            print(Args[1])
+            
+            if tostring(Args[1]) == 'Model' or tostring(Args[1]) == 'PlacingModel' then
+                return true, true
+            end
+            
+            return OldDrag(...)
+        end)
+    end
+})
 
 --//Logs Items\\--
 WoodSellSectionPlanks:AddButton({
