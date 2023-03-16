@@ -38,6 +38,11 @@ local ChangelogTable = {
         Name = 'JSK',
         Value = 'Disable the AutoFarm and stop cutting any trees when Safe Reset is clicked.',
     },
+    {
+        Type = 'Add',
+        Name = 'JSK',
+        Value = 'Add AntiLog so the Anti-Cheat cannot tell the server you exploited.',
+    },
 }
 
 local UI = loadstring(game:HttpGet('https://raw.githubusercontent.com/noobiii/modified-pepsilib/main/source'))()
