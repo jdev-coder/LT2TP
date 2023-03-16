@@ -182,26 +182,7 @@ CreditsSect:AddLabel('Me (@JSK, jdev-coder)\nand other contributors (@noobiii) f
 
 --//Anti-Exploit bypass\\--
 if not _G.Bypassed then
-    local NC = nil
-    local NC2 = nil
-    
-    NC = hookmetamethod(game, '__namecall', function(Self, ...)
-        local Args = {...}
-        local NamecallMethod = getnamecallmethod()
-    
-        if Self == game:GetService('ReplicatedStorage').Transactions.AddLog and NamecallMethod == 'InvokeServer' and Args[1] == 'Exploit' then
-            Notify('Whoops! You have triggered the anti-cheat. Luckily, LT2TP saved ya.')
-            return 
-        end
-        
-        if Self == game:GetService('ReplicatedStorage').PlaceStructure.ClientPlacedWire and NamecallMethod == 'InvokeServer' and Args[2] and Args[2][1] and Args[2][2] and (Args[1] - Args[2]).Magnitude > 7 then
-            Notify('Whoops! You have triggered the long wire ban! Luckily, LT2TP saved ya. If you are sure you want to place this wire, please rejoin and do not run LT2TP.')
-            return 
-        end
-    
-        return NC(Self, ...)
-    end)
-	
+    local NC 
 	
     --ALERT: CODE BELOW NOT WRITTEN BY ME, NEEDS TO BE REPLACED. (SKIDDED)
     local Anticheat_Env = getsenv(game:GetService('Players').LocalPlayer.PlayerGui.LoadSaveGUI.LoadSaveClient.LocalScript)
@@ -222,17 +203,30 @@ if not _G.Bypassed then
         wait(9e9)
     end)
     
-    NC2 = hookmetamethod(game, '__namecall', newcclosure(function(...)
+    NC = hookmetamethod(game, '__namecall', newcclosure(function(...)
+        local Args = {...}
+        
+        if tostring(...) == 'ClientPlacedWire' and getnamecallmethod() == 'FireServer' and Args[2] and Args[2][1] and Args[2][2] and (Args[1] - Args[2]).Magnitude > 7 then
+            Notify('Whoops! You have triggered the long wire ban! Luckily, LT2TP saved ya. If you are sure you want to place this wire, please rejoin and do not run LT2TP.')
+            wait(9e9)
+        end
+        
+        --//Other protections.\\--
+        
         if tostring(...) == 'AddLog' then
+            Notify('Whoops! You have triggered the anti-cheat! Luckily, LT2TP saved ya.')
             wait(9e9)
         end
         if getnamecallmethod() == 'Kick' then
+            Notify('Whoops! You have triggered the anti-cheat! Luckily, LT2TP saved ya.')
             wait(9e9)
         end
         if tostring(...) == 'Ban' then
+            Notify('Whoops! You have triggered the anti-cheat! Luckily, LT2TP saved ya.')
             wait(9e9)
         end
-        return NC2(...)
+        
+        return NC(...)
     end))
  
     _G.Bypassed = true
