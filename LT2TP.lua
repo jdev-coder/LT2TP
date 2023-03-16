@@ -59,6 +59,8 @@ game:GetService('Players').LocalPlayer.Idled:connect(function()
 end)
 
 --//Anti-Exploit bypass\\--
+
+--ALERT: Skidded function below, should rewrite.
 if not _G.Bypassed then
     local Anticheat_Env = getsenv(game:GetService('Players').LocalPlayer.PlayerGui.LoadSaveGUI.LoadSaveClient.LocalScript)
     
@@ -129,6 +131,8 @@ end
 FreeLandSect:AddButton({
     Name = 'Max Land',
     Callback = function()
+	--ALERT: Skidded function below, should rewrite.
+			
         for i,v in pairs(game:GetService('Workspace').Properties:GetChildren()) do
         	if v:FindFirstChild('Owner') and v.Owner.Value == game.Players.LocalPlayer then
         		Base = v
