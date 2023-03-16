@@ -44,7 +44,7 @@ local ChangelogTable = {
         Value = 'Add AntiLog so the Anti-Cheat cannot tell the server you exploited.',
     },
     {
-        Type = 'Remove',
+        Type = 'Change',
         Name = 'JSK',
         Value = 'Modify AntiLog to fix problem where it tried to hook FS.',
     },
