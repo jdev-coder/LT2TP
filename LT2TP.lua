@@ -230,8 +230,6 @@ if not _G.Bypassed then
     end))
  
     _G.Bypassed = true
-  
-    Notify('LT2TP has sucessfully disabled the anti-cheat. You will automatically be protected against certain bans.')
 end
 
 --//Functions, exposed via getgenv\\--
@@ -248,6 +246,9 @@ function Notify(Message)
         game:GetService('StarterGui'):SetCore('SendNotification', {Title = Message})
     end
 end
+
+--//Show Anti-Cheat bypass notification\\--
+Notify('LT2TP has bypassed the anti-cheat. You will be protected from certain bans, too.')
 
 --//Load the tree types\\--
 for i,v in pairs(workspace:GetChildren()) do
