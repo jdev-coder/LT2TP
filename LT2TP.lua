@@ -214,6 +214,10 @@ hookfunction(game:GetService('ReplicatedStorage').Transactions.AddLog.InvokeServ
     return
 end)
 
+hookfunction(game:GetService('ReplicatedStorage').Transactions.AddLog.FireServer, function()
+    return
+end)
+
 --//Functions, exposed via getgenv\\--
 function AddLand(Pos)
     game:GetService('ReplicatedStorage').PropertyPurchasing.ClientExpandedProperty:FireServer(Base, Pos)
