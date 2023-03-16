@@ -46,12 +46,17 @@ local ChangelogTable = {
     {
         Type = 'Remove',
         Name = 'JSK',
-        Value = 'Modify AntiLog to fix problem where it tried to hook FireServer on a RemoteFunction.',
+        Value = 'Modify AntiLog to fix problem where it tried to hook FS.',
     },
     {
         Type = 'Change',
         Name = 'JSK',
         Value = 'Whoops. AntiLog used HookFunction which may not have done anything.',
+    },
+    {
+        Type = 'Add',
+        Name = 'JSK',
+        Value = 'Added built-in long wire ban protection.',
     },
 }
 
