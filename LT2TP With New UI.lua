@@ -83,6 +83,12 @@ local CF = nil
 local AutoFarm = false
 local AntiBL = false
 
+local ShopNamesTable = {}
+
+for i,v in pairs(game:GetService('ReplicatedStorage').ClientItemInfo:GetChildren()) do
+    table.insert(ShopNamesTable, v.ItemName.Value)
+end
+
 for i,v in pairs(ChangelogTable) do
     if v.Type == 'Add' then
         local ToSplitAt = #v.Value / 2
@@ -371,7 +377,83 @@ Player:createButton({
 })
 
 --//AutoBuy Items\\--
-
+Buy:createDropdown({
+    text = 'Buy Item',
+    default = 'None',
+    options = ShopNamesTable,
+    callback = function(Item)
+        local ItemToPurchase = nil
+        
+        if Item == 'None' then return end
+        
+        for i,v in pairs(game:GetService('ReplicatedStorage').ClientItemInfo:GetChildren()) do
+            if v:FindFirstChild('ItemName') and v.ItemName.Value == Item then
+                ItemToPurchase = v.Name
+            end
+        end
+        
+        if not ItemToPurchase then
+            return Notify('No item found. It is likely the store does not have the item.')
+        end
+        
+        for i,v in pairs(workspace.Stores:GetDescendants()) do
+            if v.Name == 'BoxItemName' and v.Parent.Name == 'Box' and v.Value == ItemToPurchase and v.Parent:FindFirstChild('Main', true) then
+                local Store = nil
+                local OldPos = game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.CFrame
+                
+                if not v.Parent:FindFirstChild('Main', true) then
+                    return Notify('Unable to find the Main part of the box.')
+                end
+                
+                for i,v in pairs(workspace.Stores:GetChildren()) do
+                    if v:FindFirstChild('Counter') and (v.Counter.Position - v.Parent:FindFirstChild('Main', true).Position) then
+                        Store = v
+                        break
+                    end
+                end
+                
+                if not Store then
+                    return Notify('Unable to find the store where the item is located.')
+                end
+                
+                if not Store:FindFirstChild('HumanoidRootPart', true) then
+                    return Notify('Unable to find the store\'s NPC.')
+                end
+                
+                if not Store:FindFirstChild('Dialog', true) then
+                    return Notify('Unable to find the NPC\'s Dialog!')
+                end
+                
+                game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.CFrame = v.Parent:FindFirstChild('Main', true).CFrame
+                
+                game:GetService('ReplicatedStorage').Interaction.ClientIsDragging:FireServer(v.Parent)
+                v.Parent:FindFirstChild('Main', true).CFrame = Store.Counter.CFrame
+                game:GetService('ReplicatedStorage').Interaction.ClientIsDragging:FireServer(v.Parent)
+                
+                game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.CFrame = Store.Counter.CFrame
+                
+                wait(.2)
+                
+                for i = 1, 30 do
+                    pcall(function()
+                        game:GetService('ReplicatedStorage').NPCDialog.PlayerChatted:InvokeServer({ID = i, Name = Store:FindFirstChild('HumanoidRootPart', true).Parent.Name, Dialog = Store:FindFirstChild('Dialog', true), Character = Store:FindFirstChild('HumanoidRootPart', true).Parent}, 'ConfirmPurchase')
+                    end)
+                end
+                
+                wait(.2)
+                
+                game:GetService('ReplicatedStorage').Interaction.ClientIsDragging:FireServer(v.Parent)
+                v.Parent:FindFirstChild('Main', true).CFrame = OldPos
+                game:GetService('ReplicatedStorage').Interaction.ClientIsDragging:FireServer(v.Parent)
+                
+                game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.CFrame = OldPos
+                break
+            end
+        end
+        
+        return Item
+    end
+})
 
 --//World Items\\--
 World:createButton({
@@ -405,7 +487,7 @@ World:createButton({
 World:createButton({
     text = 'Lower Bridge',
     callback = function()
-        game:GetService('ReplicatedStorage').NPCDialog.PlayerChatted:InvokeServer({ID = 14, text = 'Seranok', Dialog = Instance.new('Dialog'), Character = workspace.Bridge.TollBooth0.Seranok}, 'ConfirmPurchase')
+        game:GetService('ReplicatedStorage').NPCDialog.PlayerChatted:InvokeServer({ID = 14, Name = 'Seranok', Dialog = Instance.new('Dialog'), Character = workspace.Bridge.TollBooth0.Seranok}, 'ConfirmPurchase')
     end
 })
 
