@@ -19,26 +19,6 @@
 
 local ChangelogTable = {
     {
-        Type = 'Change',
-        Name = 'JSK',
-        Value = 'Fixed tree dismemberer.',
-    },
-    {
-        Type = 'Change',
-        Name = 'noobiii',
-        Value = 'Made the sliders on the Players tab show what you are changing.',
-    },
-    {
-        Type = 'Add',
-        Name = 'noobiii',
-        Value = 'Increased the Gravity Slider\'s range to 0-500.',
-    },
-    {
-        Type = 'Add',
-        Name = 'JSK',
-        Value = 'Disable the AutoFarm and stop cutting any trees when Safe Reset is clicked.',
-    },
-    {
         Type = 'Add',
         Name = 'JSK',
         Value = 'Add AntiLog so the Anti-Cheat cannot tell the server you exploited.',
