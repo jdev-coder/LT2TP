@@ -104,11 +104,11 @@ for i,v in pairs(ChangelogTable) do
         local Value = string.sub(v.Value, 1, ToSplitAt)
         local Value2 = string.sub(v.Value, ToSplitAt + 1, #v.Value)
 		
-        Changelog:createLabel({
+	Changelog:createLabel({
             text = '\n',
         })
         Changelog:createLabel({
-            text = '[+] ' .. Value .. '\n' .. Value2 .. ' [' .. v.Name .. ']',
+            text = '\n[+] ' .. Value .. '\n' .. Value2 .. ' [' .. v.Name .. ']',
         })
     end
     if v.Type == 'Change' then
