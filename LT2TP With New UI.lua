@@ -103,9 +103,12 @@ for i,v in pairs(ChangelogTable) do
         local ToSplitAt = #v.Value / 2
         local Value = string.sub(v.Value, 1, ToSplitAt)
         local Value2 = string.sub(v.Value, ToSplitAt + 1, #v.Value)
-        
+		
         Changelog:createLabel({
-            text = '\n[+] ' .. Value .. '\n' .. Value2 .. ' [' .. v.Name .. ']',
+            text = '\n',
+        })
+        Changelog:createLabel({
+            text = '[+] ' .. Value .. '\n' .. Value2 .. ' [' .. v.Name .. ']',
         })
     end
     if v.Type == 'Change' then
@@ -113,6 +116,9 @@ for i,v in pairs(ChangelogTable) do
         local Value = string.sub(v.Value, 1, ToSplitAt)
         local Value2 = string.sub(v.Value, ToSplitAt + 1, #v.Value)
         
+	Changelog:createLabel({
+            text = '\n',
+        })
         Changelog:createLabel({
             text = '\n[*] ' .. Value .. '\n' .. Value2 .. ' [' .. v.Name .. ']',
         })
@@ -125,6 +131,9 @@ for i,v in pairs(ChangelogTable) do
             ChangelogSect:AddLabel({text = '\n'})
         end
         
+	Changelog:createLabel({
+            text = '\n',
+        })
         Changelog:createLabel({
             text = '\n[-] ' .. Value .. Value2 .. ' [' .. v.Name .. ']',
         })
