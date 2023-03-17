@@ -105,7 +105,7 @@ for i,v in pairs(ChangelogTable) do
         local Value2 = string.sub(v.Value, ToSplitAt + 1, #v.Value)
         
         Changelog:createLabel({
-            text = '[+] ' .. Value .. '\n' .. Value2 .. ' [' .. v.Name .. ']',
+            text = '\n[+] ' .. Value .. '\n' .. Value2 .. ' [' .. v.Name .. ']',
         })
     end
     if v.Type == 'Change' then
@@ -114,7 +114,7 @@ for i,v in pairs(ChangelogTable) do
         local Value2 = string.sub(v.Value, ToSplitAt + 1, #v.Value)
         
         Changelog:createLabel({
-            text = '[*] ' .. Value .. '\n' .. Value2 .. ' [' .. v.Name .. ']',
+            text = '\n[*] ' .. Value .. '\n' .. Value2 .. ' [' .. v.Name .. ']',
         })
     end
     if v.Type == 'Remove' then
@@ -126,7 +126,7 @@ for i,v in pairs(ChangelogTable) do
         end
         
         Changelog:createLabel({
-            text = '[-] ' .. Value .. Value2 .. ' [' .. v.Name .. ']',
+            text = '\n[-] ' .. Value .. Value2 .. ' [' .. v.Name .. ']',
         })
     end
 end
@@ -144,9 +144,9 @@ game:GetService('Players').LocalPlayer.Idled:connect(function()
 end)
 
 --//Credits Items\\--
-Credits:createLabel({text = '@yukihooked for the awesome UI library! (https://v3rmillion.net/showthread.php?tid=1139856)\n'})
-Credits:createLabel({text = '@DinosaurXxX for the Max Land function. (https://gist.github.com/DinosaurXxX/93f5d5df959cf20f\n7665991be5e3c9b3)\n'})
-Credits:createLabel({text = '@Ataias for the anti-exploit bypass. (https://v3rmillion.net/showthread.php?tid=1141592)\n'})
+Credits:createLabel({text = '@yukihooked for the awesome UI library!\n(https://v3rmillion.net\n/showthread.php?tid=1139856)\n'})
+Credits:createLabel({text = '@DinosaurXxX for the Max Land function.\n(https://gist.github.com\n/DinosaurXxX/93f5d5df959cf20f\n7665991be5e3c9b3)\n'})
+Credits:createLabel({text = '@Ataias for the anti-exploit bypass.\n(https://v3rmillion.net\n/showthread.php?tid=1141592)\n'})
 Credits:createLabel({text = 'Me (@JSK, jdev-coder)\nand other contributors (@noobiii) for the rest.\n'})
 
 --//Anti-Exploit bypass\\--
