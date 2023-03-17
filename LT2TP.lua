@@ -461,9 +461,9 @@ AutoBuySection:AddDropdown({
                     return Notify('Unable to find the Main part of the box.')
                 end
                 
-                for i,v in pairs(workspace.Stores:GetChildren()) do
-                    if v:FindFirstChild('Counter') and (v.Counter.Position - v.Parent:FindFirstChild('Main', true).Position) then
-                        Store = v
+                for i2,v2 in pairs(workspace.Stores:GetChildren()) do
+                    if v2:FindFirstChild('Counter') and (v2.Counter.Position - v.Parent:FindFirstChild('Main', true).Position).Magnitude < 120 then
+                        Store = v2
                         break
                     end
                 end
@@ -478,13 +478,23 @@ AutoBuySection:AddDropdown({
                 
                 game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.CFrame = v.Parent:FindFirstChild('Main', true).CFrame
                 
-                game:GetService('ReplicatedStorage').Interaction.ClientIsDragging:FireServer(v.Parent)
-                v.Parent:FindFirstChild('Main', true).CFrame = Store.Counter.CFrame
-                game:GetService('ReplicatedStorage').Interaction.ClientIsDragging:FireServer(v.Parent)
+                wait(.6)
+                
+                for i = 1, 30 do
+                    wait()
+                    
+                    game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.CFrame = v.Parent:FindFirstChild('Main', true).CFrame
+                    
+                    game:GetService('ReplicatedStorage').Interaction.ClientIsDragging:FireServer(v.Parent)
+                    v.Parent:FindFirstChild('Main', true).CFrame = Store.Counter.CFrame
+                    game:GetService('ReplicatedStorage').Interaction.ClientIsDragging:FireServer(v.Parent)
+                end
+                
+                wait(.6)
                 
                 game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.CFrame = Store.Counter.CFrame
                 
-                wait(.2)
+                wait(.6)
                 
                 for i = 1, 30 do
                     pcall(function()
@@ -492,14 +502,26 @@ AutoBuySection:AddDropdown({
                     end)
                 end
                 
-                wait(.2)
+                wait(.6)
                 
-                game:GetService('ReplicatedStorage').Interaction.ClientIsDragging:FireServer(v.Parent)
-                v.Parent:FindFirstChild('Main', true).CFrame = OldPos
-                game:GetService('ReplicatedStorage').Interaction.ClientIsDragging:FireServer(v.Parent)
+                game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.CFrame = v.Parent:FindFirstChild('Main', true).CFrame
+                
+                wait(.3)
+                
+                for i = 1, 30 do
+                    wait()
+                    
+                    game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.CFrame = v.Parent:FindFirstChild('Main', true).CFrame
+                    
+                    game:GetService('ReplicatedStorage').Interaction.ClientIsDragging:FireServer(v.Parent)
+                    v.Parent:FindFirstChild('Main', true).CFrame = OldPos
+                    game:GetService('ReplicatedStorage').Interaction.ClientIsDragging:FireServer(v.Parent)
+                end
                 
                 game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.CFrame = OldPos
-                break
+                
+                
+                return
             end
         end
         
