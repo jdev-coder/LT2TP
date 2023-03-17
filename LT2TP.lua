@@ -1,3 +1,5 @@
+--//This is the old LT2TP. Use the new UI as it is the only one to get new features.\\--
+
 --//Credits\\--
 --[[
 	@Pepsi for the awesome UI library! (https://v3rmillion.net/showthread.php?tid=1139856)
