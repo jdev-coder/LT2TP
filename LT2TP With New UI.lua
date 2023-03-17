@@ -63,6 +63,11 @@ local ChangelogTable = {
         Name = 'JSK',
         Value = 'Safe Reset now stops cutting trees.',
     },
+    {
+        Type = 'Add',
+        Name = 'JSK',
+        Value = 'Add a new UI library.',
+    },
 }
 
 local UI = loadstring(game:HttpGet('https://raw.githubusercontent.com/jdev-coder/Supremacy-Mod/main/Library.lua'))()
@@ -108,8 +113,11 @@ for i,v in pairs(ChangelogTable) do
             text = '\n',
         })
         Changelog:createLabel({
-            text = '\n[+] ' .. Value .. '\n' .. Value2 .. ' [' .. v.Name .. ']',
+            text = '[+] ' .. Value,
         })
+	Changelog:createLabel({
+	    text = Value2 .. ' [' .. v.Name .. ']'
+	})
     end
     if v.Type == 'Change' then
         local ToSplitAt = #v.Value / 2
@@ -120,23 +128,26 @@ for i,v in pairs(ChangelogTable) do
             text = '\n',
         })
         Changelog:createLabel({
-            text = '\n[*] ' .. Value .. '\n' .. Value2 .. ' [' .. v.Name .. ']',
+            text = '[*] ' .. Value,
         })
+	Changelog:createLabel({
+	    text = Value2 .. ' [' .. v.Name .. ']'
+	})
     end
     if v.Type == 'Remove' then
         local ToSplitAt = #v.Value / 2
         local Value = string.sub(v.Value, 1, ToSplitAt)
         local Value2 = string.sub(v.Value, ToSplitAt + 1, #v.Value)
-        if i > 1 then
-            ChangelogSect:AddLabel({text = '\n'})
-        end
         
 	Changelog:createLabel({
             text = '\n',
         })
         Changelog:createLabel({
-            text = '\n[-] ' .. Value .. Value2 .. ' [' .. v.Name .. ']',
+            text = '[-] ' .. Value,
         })
+	Changelog:createLabel({
+	    text = Value2 .. ' [' .. v.Name .. ']'
+	})
     end
 end
 
@@ -228,7 +239,7 @@ end
 local Module = require(game:GetService('ReplicatedStorage').Credits)
 Module[8] = {
     heading = '\nLT2TP UI Library',
-    credits = {'Pepsi'},
+    credits = {'yukihooked'},
 }
 Module[9] = {
     heading = 'LT2TP AC Bypass',
@@ -247,6 +258,9 @@ game:GetService('StarterGui').CreditsGUI:Clone().Parent = game:GetService('Playe
 game:GetService('Players').LocalPlayer.PlayerGui.CreditsGUI.Credits.Quit.Activated:Connect(function()
     game:GetService('Players').LocalPlayer.PlayerGui.MenuGUI.Open.Visible = true
 end)
+
+--//Change mouse cursor for UI library\\--
+game:GetService('UserInputService').MouseIconEnabled = false
 
 --//Functions\\--
 function Notify(Message)
