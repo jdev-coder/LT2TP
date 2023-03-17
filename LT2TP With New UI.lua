@@ -85,8 +85,19 @@ local AntiBL = false
 
 local ShopNamesTable = {}
 
+--//This garbage code is so inefficient.\\--
 for i,v in pairs(game:GetService('ReplicatedStorage').ClientItemInfo:GetChildren()) do
-    table.insert(ShopNamesTable, v.ItemName.Value)
+    for i2,v2 in pairs(workspace.Stores:GetChildren()) do
+        if v2.Name == 'ShopItems' then
+            for i3,v3 in pairs(v2:GetChildren()) do
+                if v3:FindFirstChild('BoxItemName') then
+                    if v:FindFirstChild('ItemName') and v.Name == v3.BoxItemName.Value and not table.find(ShopNamesTable, v.ItemName.Value) then
+                        table.insert(ShopNamesTable, v.ItemName.Value)
+                    end
+                end
+            end
+        end
+    end
 end
 
 for i,v in pairs(ChangelogTable) do
@@ -96,11 +107,11 @@ for i,v in pairs(ChangelogTable) do
         local Value2 = string.sub(v.Value, ToSplitAt + 1, #v.Value)
 		
 	Changelog:createLabel({
-            text = '\n',
-        })
-        Changelog:createLabel({
-            text = '[+] ' .. Value,
-        })
+        text = '\n',
+    })
+    Changelog:createLabel({
+        text = '[+] ' .. Value,
+    })
 	Changelog:createLabel({
 	    text = Value2 .. ' [' .. v.Name .. ']'
 	})
@@ -111,11 +122,11 @@ for i,v in pairs(ChangelogTable) do
         local Value2 = string.sub(v.Value, ToSplitAt + 1, #v.Value)
         
 	Changelog:createLabel({
-            text = '\n',
-        })
-        Changelog:createLabel({
-            text = '[*] ' .. Value,
-        })
+        text = '\n',
+    })
+    Changelog:createLabel({
+        text = '[*] ' .. Value,
+    })
 	Changelog:createLabel({
 	    text = Value2 .. ' [' .. v.Name .. ']'
 	})
@@ -125,15 +136,15 @@ for i,v in pairs(ChangelogTable) do
         local Value = string.sub(v.Value, 1, ToSplitAt)
         local Value2 = string.sub(v.Value, ToSplitAt + 1, #v.Value)
         
-	Changelog:createLabel({
+	    Changelog:createLabel({
             text = '\n',
         })
         Changelog:createLabel({
             text = '[-] ' .. Value,
         })
-	Changelog:createLabel({
-	    text = Value2 .. ' [' .. v.Name .. ']'
-	})
+	    Changelog:createLabel({
+	        text = Value2 .. ' [' .. v.Name .. ']'
+	    })
     end
 end
 
@@ -420,10 +431,6 @@ Buy:createDropdown({
                     return Notify('Unable to find the store\'s NPC.')
                 end
                 
-                if not Store:FindFirstChild('Dialog', true) then
-                    return Notify('Unable to find the NPC\'s Dialog!')
-                end
-                
                 game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.CFrame = v.Parent:FindFirstChild('Main', true).CFrame
                 
                 game:GetService('ReplicatedStorage').Interaction.ClientIsDragging:FireServer(v.Parent)
@@ -557,7 +564,7 @@ Trees:createDropdown({
         for i,v in pairs(Regions) do
             for i2,v2 in pairs(v:GetChildren()) do
                 if v2:FindFirstChild('TreeClass') and v2.TreeClass.Value == TreeType and not v2:FindFirstChild('RootCut') then
-                    local Axetext = Axe.ToolName.Value
+                    local AxeName = Axe.ToolName.Value
                     local Class = require(game:GetService('ReplicatedStorage').AxeClasses:FindFirstChild('AxeClass_'..AxeName)).new()
                     local Break = false
                     local Count = 0
