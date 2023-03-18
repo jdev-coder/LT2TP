@@ -19,6 +19,21 @@
 
 local ChangelogTable = {
     {
+        Type = 'Change',
+        Name = 'noobiii',
+        Value = 'Made the sliders on the Players tab show what you are changing.',
+    },
+    {
+        Type = 'Add',
+        Name = 'noobiii',
+        Value = 'Increased the Gravity Slider\'s range to 0-500.',
+    },
+    {
+        Type = 'Add',
+        Name = 'JSK',
+        Value = 'Disable the AutoFarm and stop cutting any trees when Safe Reset is clicked.',
+    },
+    {
         Type = 'Add',
         Name = 'JSK',
         Value = 'Add AntiLog so the Anti-Cheat cannot tell the server you exploited.',
@@ -39,14 +54,9 @@ local ChangelogTable = {
         Value = 'Added built-in long wire ban protection.',
     },
     {
-        Type = 'Change',
-        Name = 'JSK',
-        Value = 'Safe Reset now stops cutting trees.',
-    },
-    {
-        Type = 'Add',
-        Name = 'JSK',
-        Value = 'Add a new UI library.',
+	Type = 'Add',
+	Name = 'JSK',
+	Value = 'Added Blow Up All Dynamite',
     },
 }
 
@@ -501,6 +511,19 @@ Buy:createDropdown({
 })
 
 --//World Items\\--
+World:createButton({
+    text = 'Blow Up All Dynamite',
+    callback = function()
+        for i,v in pairs(workspace.PlayerModels:GetChildren()) do
+            if v:FindFirstChild('ButtonRemote_Main') then
+                wait(1)
+                
+                game:GetService('ReplicatedStorage').Interaction.RemoteProxy:FireServer(v:FindFirstChild('ButtonRemote_Main'))
+            end
+        end
+    end
+})
+
 World:createButton({
     text = 'BTools',
     callback = function()
