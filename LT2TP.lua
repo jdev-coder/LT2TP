@@ -476,14 +476,30 @@ AutoBuySection:AddDropdown({
                     return Notify('Unable to find the store\'s NPC.')
                 end
                 
-                game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.CFrame = v.Parent:FindFirstChild('Main', true).CFrame
+                for i,v in pairs(workspace.Stores:GetDescendants()) do
+                    if v.Name == 'Box' then
+                        if (Store.Counter.Position - v:FindFirstChild('Main', true).Position).Magnitude < 10 then
+                            for i = 1, 10 do
+                                wait()
+                                
+                                game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.CFrame = v:FindFirstChild('Main', true).CFrame - Vector3.new(5,0,0)
+                                
+                                game:GetService('ReplicatedStorage').Interaction.ClientIsDragging:FireServer(v)
+                                v:FindFirstChild('Main', true).CFrame = CFrame.new(0, 300, 0)
+                                game:GetService('ReplicatedStorage').Interaction.ClientIsDragging:FireServer(v)
+                            end
+                        end
+                    end
+                end
+                
+                game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.CFrame = v.Parent:FindFirstChild('Main', true).CFrame - Vector3.new(5,0,0)
                 
                 wait(.6)
                 
-                for i = 1, 30 do
+                for i = 1, 10 do
                     wait()
                     
-                    game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.CFrame = v.Parent:FindFirstChild('Main', true).CFrame
+                    game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.CFrame = v.Parent:FindFirstChild('Main', true).CFrame - Vector3.new(5,0,0)
                     
                     game:GetService('ReplicatedStorage').Interaction.ClientIsDragging:FireServer(v.Parent)
                     v.Parent:FindFirstChild('Main', true).CFrame = Store.Counter.CFrame
@@ -496,7 +512,7 @@ AutoBuySection:AddDropdown({
                 
                 wait(.6)
                 
-                for i = 1, 30 do
+                for i = 1, 10 do
                     pcall(function()
                         game:GetService('ReplicatedStorage').NPCDialog.PlayerChatted:InvokeServer({ID = i, Name = Store:FindFirstChild('HumanoidRootPart', true).Parent.Name, Dialog = Store:FindFirstChild('Dialog', true), Character = Store:FindFirstChild('HumanoidRootPart', true).Parent}, 'ConfirmPurchase')
                     end)
@@ -504,14 +520,14 @@ AutoBuySection:AddDropdown({
                 
                 wait(.6)
                 
-                game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.CFrame = v.Parent:FindFirstChild('Main', true).CFrame
+                game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.CFrame = v.Parent:FindFirstChild('Main', true).CFrame - Vector3.new(5,0,0)
                 
                 wait(.3)
                 
                 for i = 1, 30 do
                     wait()
                     
-                    game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.CFrame = v.Parent:FindFirstChild('Main', true).CFrame
+                    game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.CFrame = v.Parent:FindFirstChild('Main', true).CFrame - Vector3.new(5,0,0)
                     
                     game:GetService('ReplicatedStorage').Interaction.ClientIsDragging:FireServer(v.Parent)
                     v.Parent:FindFirstChild('Main', true).CFrame = OldPos
