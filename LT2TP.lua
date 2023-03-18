@@ -20,11 +20,6 @@
 local ChangelogTable = {
     {
         Type = 'Change',
-        Name = 'JSK',
-        Value = 'Fixed tree dismemberer.',
-    },
-    {
-        Type = 'Change',
         Name = 'noobiii',
         Value = 'Made the sliders on the Players tab show what you are changing.',
     },
@@ -59,9 +54,9 @@ local ChangelogTable = {
         Value = 'Added built-in long wire ban protection.',
     },
     {
-        Type = 'Change',
-        Name = 'JSK',
-        Value = 'Safe Reset now stops cutting trees.',
+	Type = 'Add',
+	Name = 'JSK',
+	Value = 'Added Blow Up All Dynamite',
     },
 }
 
@@ -544,6 +539,19 @@ AutoBuySection:AddDropdown({
 })
 
 --//World Items\\--
+WorldMisc:AddButton({
+    Name = 'Blow Up All Dynamite',
+    Callback = function()
+        for i,v in pairs(workspace.PlayerModels:GetChildren()) do
+            if v:FindFirstChild('ButtonRemote_Main') then
+                wait(1)
+                
+                game:GetService('ReplicatedStorage').Interaction.RemoteProxy:FireServer(v:FindFirstChild('ButtonRemote_Main'))
+            end
+        end
+    end
+})
+
 WorldMisc:AddButton({
     Name = 'BTools',
     Callback = function()
