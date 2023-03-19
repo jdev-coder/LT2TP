@@ -836,8 +836,12 @@ Trees:createButton({
         for i,v in pairs(workspace.LogModels:GetChildren()) do
             if v:FindFirstChild('Owner') and v.Owner.Value == game:GetService('Players').LocalPlayer then
                 for i,v in pairs(v:GetChildren()) do
-                    if v.Name == 'WoodSection' then
-                        v.Size /= 2
+                    if v.Name == 'WoodSection' and v:FindFirstChild('Tree Weld') then
+                        for i,v in pairs(v:GetChildren()) do
+                            if v.Name == 'Tree Weld' then
+                                v:Destroy()
+                            end
+                        end
                     end
                 end
             end
