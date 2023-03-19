@@ -94,9 +94,6 @@ local FreeLandSect = Land:CreateSection({Name = 'Free Land'})
 local ChangelogSect = Changelog:CreateSection({Name = 'Changelog'})
 local CreditsSect = Credits:CreateSection({Name = 'Credits'})
 
-local NoticeClient = getsenv(game:GetService('Players').LocalPlayer.PlayerGui.NoticeGUI.NoticeClient)
-local NoticeFunc = NoticeClient.doNotice
-
 local WalkSpeed = 16
 local JumpPower = 50
 
@@ -113,6 +110,76 @@ local AutoFarm = false
 local AntiBL = false
 
 local ShopNamesTable = {}
+local TreeProperties = {
+    Birch = {
+        LogValue = 2.25,
+        PlankValue = 15,
+    },
+    CaveCrawler = {
+        LogValue = 8,
+        PlankValue = 35,
+    },
+    Cherry = {
+        LogValue = 1.3,
+        PlankValue = 10.5,
+    },
+    Fir = {
+        LogValue = 3.2,
+        PlankValue = 18,
+    },
+    Generic = {
+        LogValue = 1.5,
+        PlankValue = 10,
+    },
+    GoldSwampy = {
+        LogValue = 5.7,
+        PlankValue = 36,
+    },
+    GreenSwampy = {
+        LogValue = 4,4,
+        PlankValue = 30,
+    },
+    Koa = {
+        LogValue = 2.8,
+        PlankValue = 26.4,
+    },
+    LoneCave = {
+        LogValue = 150,
+        PlankValue = 420,
+    },
+    Oak = {
+        LogValue = 0.75,
+        PlankValue = 6,
+    },
+    Palm = {
+        LogValue = 2.5,
+        PlankValue = 32,
+    },
+    Pine = {
+        LogValue = 3.2,
+        PlankValue = 18,
+    },
+    Sign = {
+        LogValue = 170,
+        PlankValue = 170,
+    },
+    SnowGlow = {
+        LogValue = 1.5,
+        PlankValue = 10,
+    },
+    Generic = {
+        LogValue = 19,
+        PlankValue = 54,
+    },
+    Volcano = {
+        LogValue = 3.5,
+        PlankValue = 28,
+    },
+    Walnut = {
+        LogValue = 1.2,
+        PlankValue = 11,
+    },
+}
 
 --//This garbage code is so inefficient.\\--
 for i,v in pairs(game:GetService('ReplicatedStorage').ClientItemInfo:GetChildren()) do
@@ -288,13 +355,31 @@ end)
 
 --//Functions\\--
 function Notify(Message)
-    if syn_context_set then
-        syn_context_set(2)
-        NoticeFunc(Message)
-        syn_context_set(7)
-    else
-        game:GetService('StarterGui'):SetCore('SendNotification', {Title = Message})
+    game:GetService('ReplicatedStorage').Notices.SendUserNotice:Fire(Message)
+end
+
+function GrabTreeValue(Tree)
+    local TreeVolume = 0
+
+    if not Tree:FindFirstChild('TreeClass') then
+        return Notify('Tree class not found.')
     end
+    
+    local ValuePerLog = TreeProperties[Tree.TreeClass.Value].LogValue
+    
+    if not Tree:FindFirstChild('WoodSection') then
+        return Notify('Tree section not found.')
+    end
+    
+    for i,v in pairs(Tree:GetChildren()) do
+        if v.Name == 'WoodSection' then
+            TreeVolume += v.Size.X * v.Size.Y * v.Size.Z
+        end
+    end
+    
+    print(TreeVolume * ValuePerLog)
+    
+    return TreeVolume * ValuePerLog
 end
 
 --//Show Anti-Cheat bypass notification\\--
@@ -1015,7 +1100,7 @@ TreeMisc:AddButton({
         
         for i,v in pairs(Regions) do
             for i2,v2 in pairs(v:GetChildren()) do
-                if v2:FindFirstChild('TreeClass') and v2.TreeClass.Value ~= 'LoneCave' and not v2:FindFirstChild('RootCut') then
+                if v2:FindFirstChild('TreeClass') and v2.TreeClass.Value ~= 'LoneCave' and v2.TreeClass ~= 'Palm' and GetTreeValue(v2) > 400 and not v2:FindFirstChild('RootCut') then
                     pcall(function()
                         local AxeName = Axe.ToolName.Value
                         local Class = require(game:GetService('ReplicatedStorage').AxeClasses:FindFirstChild('AxeClass_'..AxeName)).new()
@@ -1169,6 +1254,7 @@ TreeMisc:AddButton({
 --//Expose functions\\--
 getgenv().AddLand = AddLand
 getgenv().Notify = Notify
+getgenv().GetTreeValue = GrabTreeValue
 
 --//Loops\\--
 _G.Conn = game:GetService('RunService').Stepped:Connect(function()
