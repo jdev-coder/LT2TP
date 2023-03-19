@@ -94,6 +94,7 @@ local AutoFarm = false
 local AntiBL = false
 
 local ShopNamesTable = {}
+--[[
 local TreeProperties = {
     Birch = {
         LogValue = 2.25,
@@ -164,6 +165,7 @@ local TreeProperties = {
         PlankValue = 11,
     },
 }
+]]
 
 --//This garbage code is so inefficient.\\--
 for i,v in pairs(game:GetService('ReplicatedStorage').ClientItemInfo:GetChildren()) do
@@ -348,22 +350,6 @@ function Notify(Message)
     else
         game:GetService('StarterGui'):SetCore('SendNotification', {Title = Message})
     end
-end
-
-function GrabTreeValue(Tree)
-    local TreeVolume = Tree:GetModelSize().X * Tree:GetModelSize().Y * Tree:GetModelSize().Z
-
-    if not Tree:FindFirstChild('TreeClass') then
-        return Notify('Tree class not found.')
-    end
-    
-    local ValuePerLog = TreeProperties[Tree.TreeClass.Value].LogValue
-    
-    if not Tree:FindFirstChild('WoodSection') then
-        return Notify('Tree section not found.')
-    end
-    
-    return TreeVolume * ValuePerLog
 end
 
 --//Show Anti-Cheat bypass notification\\--
@@ -1082,7 +1068,7 @@ Trees:createButton({
         
         for i,v in pairs(Regions) do
             for i2,v2 in pairs(v:GetChildren()) do
-                if v2:FindFirstChild('TreeClass') and v2.TreeClass.Value ~= 'LoneCave' and not v2:FindFirstChild('RootCut') then
+                if v2:FindFirstChild('TreeClass') and v2.TreeClass.Value ~= 'LoneCave' and v2.TreeClass.Value ~= 'Generic' and v2.TreeClass.Value ~= 'Palm' and not v2:FindFirstChild('RootCut') then
                     pcall(function()
                         local Axetext = Axe.ToolName.Value
                         local Class = require(game:GetService('ReplicatedStorage').AxeClasses:FindFirstChild('AxeClass_'..AxeName)).new()
