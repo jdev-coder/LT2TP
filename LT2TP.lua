@@ -110,6 +110,7 @@ local AutoFarm = false
 local AntiBL = false
 
 local ShopNamesTable = {}
+--[[
 local TreeProperties = {
     Birch = {
         LogValue = 2.25,
@@ -130,6 +131,11 @@ local TreeProperties = {
     Generic = {
         LogValue = 1.5,
         PlankValue = 10,
+    },
+    --Values are just guessed for Frost.
+    Frost = {
+        LogValue = 5,
+        PlankValue = 30,
     },
     GoldSwampy = {
         LogValue = 5.7,
@@ -180,6 +186,7 @@ local TreeProperties = {
         PlankValue = 11,
     },
 }
+]]
 
 --//This garbage code is so inefficient.\\--
 for i,v in pairs(game:GetService('ReplicatedStorage').ClientItemInfo:GetChildren()) do
@@ -356,22 +363,6 @@ end)
 --//Functions\\--
 function Notify(Message)
     game:GetService('ReplicatedStorage').Notices.SendUserNotice:Fire(Message)
-end
-
-function GrabTreeValue(Tree)
-    local TreeVolume = Tree:GetModelSize().X * Tree:GetModelSize().Y * Tree:GetModelSize().Z
-
-    if not Tree:FindFirstChild('TreeClass') then
-        return Notify('Tree class not found.')
-    end
-    
-    local ValuePerLog = TreeProperties[Tree.TreeClass.Value].LogValue
-    
-    if not Tree:FindFirstChild('WoodSection') then
-        return Notify('Tree section not found.')
-    end
-    
-    return TreeVolume * ValuePerLog
 end
 
 --//Show Anti-Cheat bypass notification\\--
@@ -1092,7 +1083,9 @@ TreeMisc:AddButton({
         
         for i,v in pairs(Regions) do
             for i2,v2 in pairs(v:GetChildren()) do
-                if v2:FindFirstChild('TreeClass') and v2.TreeClass.Value ~= 'LoneCave' and v2.TreeClass ~= 'Palm' and GetTreeValue(v2) > 400 and not v2:FindFirstChild('RootCut') then
+                print(GetTreeValue(v2))
+                
+                if v2:FindFirstChild('TreeClass') and v2.TreeClass.Value ~= 'LoneCave' and v2.TreeClass.Value ~= 'Generic' and v2.TreeClass.Value ~= 'Palm' and not v2:FindFirstChild('RootCut') then
                     pcall(function()
                         local AxeName = Axe.ToolName.Value
                         local Class = require(game:GetService('ReplicatedStorage').AxeClasses:FindFirstChild('AxeClass_'..AxeName)).new()
