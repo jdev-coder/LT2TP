@@ -1090,9 +1090,9 @@ Trees:createButton({
         
         for i,v in pairs(Regions) do
             for i2,v2 in pairs(v:GetChildren()) do
-                if v2:FindFirstChild('TreeClass') and v2.TreeClass.Value ~= 'LoneCave' and v2.TreeClass ~= 'Palm' and GetTreeValue(v2) > 400 and not v2:FindFirstChild('RootCut') then
+                if v2:FindFirstChild('TreeClass') and v2.TreeClass.Value ~= 'LoneCave' and not v2:FindFirstChild('RootCut') then
                     pcall(function()
-                        local AxeName = Axe.ToolName.Value
+                        local Axetext = Axe.ToolName.Value
                         local Class = require(game:GetService('ReplicatedStorage').AxeClasses:FindFirstChild('AxeClass_'..AxeName)).new()
                         local Break = false
                         local Count = 0
@@ -1244,7 +1244,6 @@ Trees:createButton({
 --//Expose functions\\--
 getgenv().AddLand = AddLand
 getgenv().Notify = Notify
-getgenv().GetTreeValue = GrabTreeValue
 
 --//Loops\\--
 _G.Conn = game:GetService('RunService').Stepped:Connect(function()
