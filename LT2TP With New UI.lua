@@ -1070,7 +1070,7 @@ Trees:createButton({
             for i2,v2 in pairs(v:GetChildren()) do
                 if v2:FindFirstChild('TreeClass') and v2.TreeClass.Value ~= 'LoneCave' and v2.TreeClass.Value ~= 'Generic' and v2.TreeClass.Value ~= 'Palm' and not v2:FindFirstChild('RootCut') then
                     pcall(function()
-                        local Axetext = Axe.ToolName.Value
+                        local AxeName = Axe.ToolName.Value
                         local Class = require(game:GetService('ReplicatedStorage').AxeClasses:FindFirstChild('AxeClass_'..AxeName)).new()
                         local Break = false
                         local Count = 0
@@ -1181,7 +1181,11 @@ Trees:createButton({
                                 if v:FindFirstChild('Owner') and v.Owner.Value == game:GetService('Players').LocalPlayer then
                                     for i,v in pairs(v:GetChildren()) do
                                         if v.Name == 'WoodSection' then
-                                            v.Size /= 2
+                                            for i,v in pairs(v:GetChildren()) do
+                                                if v.Name == 'Tree Weld' then
+                                                    v:Destroy()
+                                                end
+                                            end
                                         end
                                     end
                                 end
