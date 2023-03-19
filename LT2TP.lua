@@ -794,6 +794,35 @@ TreeBringSection:AddDropdown({
     end
 })
 
+--[[
+TreeMisc:AddButton({
+    Name = 'Modify All Wood',
+    Callback = function()
+        for i,v in pairs(workspace.LogModels:GetChildren()) do
+            for i2,v2 in pairs(v:GetChildren()) do
+                if v2.Name == 'WoodSection' and v2:FindFirstChild('Tree Weld') then
+                    game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.CFrame = v2.CFrame
+                    
+                    wait(.05)
+                    
+                    game:GetService('ReplicatedStorage').Interaction.ClientIsDragging:FireServer(v)
+                    game:GetService('ReplicatedStorage').Interaction.ClientIsDragging:FireServer(v2)
+                    
+                    wait(.05)
+                    
+                    v2['Tree Weld']:Remove()
+                    
+                    wait()
+                    
+                    game:GetService('ReplicatedStorage').Interaction.ClientIsDragging:FireServer(v)
+                    game:GetService('ReplicatedStorage').Interaction.ClientIsDragging:FireServer(v2)
+                end
+            end
+        end
+    end
+})
+]]
+
 TreeMisc:AddButton({
     Name = 'Bring All Trees',
     Callback = function()
@@ -854,8 +883,12 @@ TreeMisc:AddButton({
         for i,v in pairs(workspace.LogModels:GetChildren()) do
             if v:FindFirstChild('Owner') and v.Owner.Value == game:GetService('Players').LocalPlayer then
                 for i,v in pairs(v:GetChildren()) do
-                    if v.Name == 'WoodSection' then
-                        v.Size /= 2
+                    if v.Name == 'WoodSection' and v:FindFirstChild('Tree Weld') then
+                        for i,v in pairs(v:GetChildren()) do
+                            if v.Name == 'Tree Weld' then
+                                v:Destroy()
+                            end
+                        end
                     end
                 end
             end
@@ -1196,7 +1229,11 @@ TreeMisc:AddButton({
                                 if v:FindFirstChild('Owner') and v.Owner.Value == game:GetService('Players').LocalPlayer then
                                     for i,v in pairs(v:GetChildren()) do
                                         if v.Name == 'WoodSection' then
-                                            v.Size /= 2
+                                            for i,v in pairs(v:GetChildren()) do
+                                                if v.Name == 'Tree Weld' then
+                                                    v:Destroy()
+                                                end
+                                            end
                                         end
                                     end
                                 end
