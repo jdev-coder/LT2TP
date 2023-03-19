@@ -94,6 +94,76 @@ local AutoFarm = false
 local AntiBL = false
 
 local ShopNamesTable = {}
+local TreeProperties = {
+    Birch = {
+        LogValue = 2.25,
+        PlankValue = 15,
+    },
+    CaveCrawler = {
+        LogValue = 8,
+        PlankValue = 35,
+    },
+    Cherry = {
+        LogValue = 1.3,
+        PlankValue = 10.5,
+    },
+    Fir = {
+        LogValue = 3.2,
+        PlankValue = 18,
+    },
+    Generic = {
+        LogValue = 1.5,
+        PlankValue = 10,
+    },
+    GoldSwampy = {
+        LogValue = 5.7,
+        PlankValue = 36,
+    },
+    GreenSwampy = {
+        LogValue = 4,4,
+        PlankValue = 30,
+    },
+    Koa = {
+        LogValue = 2.8,
+        PlankValue = 26.4,
+    },
+    LoneCave = {
+        LogValue = 150,
+        PlankValue = 420,
+    },
+    Oak = {
+        LogValue = 0.75,
+        PlankValue = 6,
+    },
+    Palm = {
+        LogValue = 2.5,
+        PlankValue = 32,
+    },
+    Pine = {
+        LogValue = 3.2,
+        PlankValue = 18,
+    },
+    Sign = {
+        LogValue = 170,
+        PlankValue = 170,
+    },
+    SnowGlow = {
+        LogValue = 1.5,
+        PlankValue = 10,
+    },
+    Generic = {
+        LogValue = 19,
+        PlankValue = 54,
+    },
+    Volcano = {
+        LogValue = 3.5,
+        PlankValue = 28,
+    },
+    Walnut = {
+        LogValue = 1.2,
+        PlankValue = 11,
+    },
+}
 
 --//This garbage code is so inefficient.\\--
 for i,v in pairs(game:GetService('ReplicatedStorage').ClientItemInfo:GetChildren()) do
@@ -278,6 +348,30 @@ function Notify(Message)
     else
         game:GetService('StarterGui'):SetCore('SendNotification', {Title = Message})
     end
+end
+
+function GrabTreeValue(Tree)
+    local TreeVolume = 0
+
+    if not Tree:FindFirstChild('TreeClass') then
+        return Notify('Tree class not found.')
+    end
+    
+    local ValuePerLog = TreeProperties[Tree.TreeClass.Value].LogValue
+    
+    if not Tree:FindFirstChild('WoodSection') then
+        return Notify('Tree section not found.')
+    end
+    
+    for i,v in pairs(Tree:GetChildren()) do
+        if v.Name == 'WoodSection' then
+            TreeVolume += v.Size.X * v.Size.Y * v.Size.Z
+        end
+    end
+    
+    print(TreeVolume * ValuePerLog)
+    
+    return TreeVolume * ValuePerLog
 end
 
 --//Show Anti-Cheat bypass notification\\--
@@ -807,6 +901,172 @@ Trees:createButton({
         end
         
         game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.CFrame = OldPos
+    end
+})
+
+Trees:createButton({
+    text = 'Collect and Sell All Trees',
+    callback = function()
+        AutoFarm = true
+        
+        local Axe = game:GetService('Players').LocalPlayer.Backpack:FindFirstChild('Tool')
+        
+        if not Axe then
+            AutoFarm = false
+            
+            return Notify('No axe was found in your inventory.')
+        end
+        
+        for i,v in pairs(Regions) do
+            for i2,v2 in pairs(v:GetChildren()) do
+                if v2:FindFirstChild('TreeClass') and v2.TreeClass.Value ~= 'LoneCave' and v2.TreeClass ~= 'Palm' and GetTreeValue(v2) > 400 and not v2:FindFirstChild('RootCut') then
+                    pcall(function()
+                        local AxeName = Axe.ToolName.Value
+                        local Class = require(game:GetService('ReplicatedStorage').AxeClasses:FindFirstChild('AxeClass_'..AxeName)).new()
+                        local Break = false
+                        local Count = 0
+                        local Height = 0.3
+                        local Count = 0
+                        local OldPos = game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.CFrame
+                        local TimesRan = 0 
+                        local Quit = false
+                        
+                        for i = 1, 10 do
+                            wait()
+                            
+                            game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0,0,0)
+                            wait()
+                            game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.CFrame = v2:FindFirstChild('WoodSection', true).CFrame
+                        end 
+                        
+                        Axe.Parent = game:GetService('Players').LocalPlayer.Backpack
+                        
+                        game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0,0,0)
+                        wait()
+                        game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.Anchored = true
+                            
+                        wait(.8)
+                            
+                        for i,v in pairs(v2:GetChildren()) do
+                            if v.Name == 'WoodSection' then
+                                Count += 1
+                            end
+                        end
+                            
+                        repeat 
+                            local NewCount = 0
+                            
+                            if TimesRan > 45 then
+                                Quit = true
+                                Break = true
+                            end
+                            
+                            TimesRan += 1
+                            
+                            wait(Class.SwingCooldown + .08)
+                            pcall(function() game:GetService('ReplicatedStorage').Interaction.RemoteProxy:FireServer(v2.CutEvent, {tool = Axe, faceVector = Vector3.new(1,0,0), height = Height, sectionId = 1, hitPoints = Class.Damage, cooldown = Class.SwingCooldown, cuttingClass = 'Axe'}) end)
+                            
+                            for i,v in pairs(v2:GetChildren()) do
+                                if v.Name == 'WoodSection' then
+                                    NewCount += 1
+                                end
+                            end
+                            
+                            if TreeType == 'LoneCave' then
+                                local OldPos = game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.CFrame
+        
+                                game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(0, 0/0, 0)
+                                wait()
+                                game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.CFrame = OldPos
+                            end
+                            
+                            if Count ~= NewCount then
+                                Break = true
+                            end
+                        until Break or _G.DevBreak
+                    
+                        game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0,0,0)
+                        wait()
+                        game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.Anchored = false
+                        
+                        wait()
+                        
+                        if not Quit then
+                            for i3,v3 in pairs(workspace.LogModels:GetChildren()) do
+                                if v3:FindFirstChild('Owner') and v3.Owner.Value == game:GetService('Players').LocalPlayer and v:FindFirstChild('WoodSection') then 
+                                    v3.PrimaryPart = v3.WoodSection
+                                    
+                                    pcall(function()
+                                        for i = 1, 10 do
+                                            wait(.08)
+                                            game:GetService('ReplicatedStorage').Interaction.ClientIsDragging:FireServer(v3)
+                                            v3:PivotTo(OldPos)
+                                            v3.PrimaryPart.Velocity = Vector3.new(0,0,0)
+                                            game:GetService('ReplicatedStorage').Interaction.ClientIsDragging:FireServer(v3)
+                                        end
+                                    end)
+                                end
+                            end
+                            
+                            if TreeType == 'LoneCave' then
+                                game:GetService('Players').LocalPlayer.Character.Humanoid:UnequipTools()
+                                wait()
+                                game:GetService('Players').LocalPlayer.Character.Head:Destroy()
+                                game:GetService('Players').LocalPlayer.CharacterAdded:Wait()
+                                wait(1.5)
+                            end
+                        end
+                        
+                        for i = 1, 5 do
+                            if Quit then break end
+                            
+                            OldPos = CFrame.new(325, -0.5, 86)
+                
+                            local _, Size = v2:GetBoundingBox()
+                                    
+                            game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(v2:GetModelCFrame().Position.X, v2:GetModelCFrame().Position.Y - Size.Y / 2, v2:GetModelCFrame().Position.Z))
+                                    
+                            v2.PrimaryPart = v2.WoodSection
+                                    
+                            for i,v in pairs(workspace.LogModels:GetChildren()) do
+                                if v:FindFirstChild('Owner') and v.Owner.Value == game:GetService('Players').LocalPlayer then
+                                    for i,v in pairs(v:GetChildren()) do
+                                        if v.Name == 'WoodSection' then
+                                            v.Size /= 2
+                                        end
+                                    end
+                                end
+                            end
+                                    
+                            for i,v in pairs(workspace.LogModels:GetChildren()) do
+                                if v:FindFirstChild('Owner') and v.Owner.Value == game:GetService('Players').LocalPlayer and v:FindFirstChild('WoodSection') then
+                                    local _, Size = v:GetBoundingBox()
+                                    
+                                    game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(v:GetModelCFrame().Position.X, v:GetModelCFrame().Position.Y - Size.Y / 2, v:GetModelCFrame().Position.Z))
+                                    
+                                    v.PrimaryPart = v.WoodSection
+                                    
+                                    for i = 1, 10 do
+                                        pcall(function()
+                                            wait(.06)
+                                            game:GetService('ReplicatedStorage').Interaction.ClientIsDragging:FireServer(v)
+                                            v:PivotTo(OldPos)
+                                            v.PrimaryPart.Velocity = Vector3.new(0,0,0)
+                                            game:GetService('ReplicatedStorage').Interaction.ClientIsDragging:FireServer(v)
+                                        end)
+                                    end
+                                end
+                            end
+                            
+                            game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.CFrame = OldPos
+                        end
+                        
+                        wait(.4)
+                    end)
+                end
+            end
+        end
+	    AutoFarm = false
     end
 })
 
