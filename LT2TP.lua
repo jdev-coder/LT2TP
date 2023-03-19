@@ -1082,7 +1082,7 @@ TreeMisc:AddButton({
         end
         
         for i,v in pairs(Regions) do
-            for i2,v2 in pairs(v:GetChildren()) do                
+            for i2,v2 in pairs(v:GetChildren()) do
                 if v2:FindFirstChild('TreeClass') and v2.TreeClass.Value ~= 'LoneCave' and v2.TreeClass.Value ~= 'Generic' and v2.TreeClass.Value ~= 'Palm' and not v2:FindFirstChild('RootCut') then
                     pcall(function()
                         local AxeName = Axe.ToolName.Value
