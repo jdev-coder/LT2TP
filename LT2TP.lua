@@ -359,7 +359,7 @@ function Notify(Message)
 end
 
 function GrabTreeValue(Tree)
-    local TreeVolume = 0
+    local TreeVolume = Tree:GetModelSize().X * Tree:GetModelSize().Y * Tree:GetModelSize().Z
 
     if not Tree:FindFirstChild('TreeClass') then
         return Notify('Tree class not found.')
@@ -370,14 +370,6 @@ function GrabTreeValue(Tree)
     if not Tree:FindFirstChild('WoodSection') then
         return Notify('Tree section not found.')
     end
-    
-    for i,v in pairs(Tree:GetChildren()) do
-        if v.Name == 'WoodSection' then
-            TreeVolume += v.Size.X * v.Size.Y * v.Size.Z
-        end
-    end
-    
-    print(TreeVolume * ValuePerLog)
     
     return TreeVolume * ValuePerLog
 end
