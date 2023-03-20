@@ -751,11 +751,9 @@ TreeBringSection:AddDropdown({
                         end
                         
                         if TreeType == 'LoneCave' then
-                            local OldPos = game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.CFrame
-    
-                            game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(0, 0/0, 0)
-                            wait()
-                            game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.CFrame = OldPos
+                            local RootJoint = game:GetService('Players').LocalPlayer.Character.HumanoidRootPart.RootJoint
+            		    RootJoint:Clone().Parent = game:GetService('Players').LocalPlayer.Character.HumanoidRootPart
+			    RootJoint:Destroy()
                         end
                         
                         if Count ~= NewCount then
