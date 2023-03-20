@@ -1274,7 +1274,6 @@ TreeMisc:AddButton({
 --//Expose functions\\--
 getgenv().AddLand = AddLand
 getgenv().Notify = Notify
-getgenv().GetTreeValue = GrabTreeValue
 
 --//Loops\\--
 _G.Conn = game:GetService('RunService').Stepped:Connect(function()
